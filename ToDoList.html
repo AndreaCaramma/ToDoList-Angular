@@ -1,0 +1,48 @@
+<html>
+<head>
+	<title>ToDo List</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.js"></script>
+</head>
+<body ng-app="ciccio">
+	<h1>To Do List</h1>
+	<div ng-controller="testoCtrl">
+		<p>Inserisci testo: <input type="text" ng-model="todo" /></p>
+		<p><button ng-click="aggiungiTesto()">Aggiungi</button></p>
+	</div>
+	
+	<div ng-controller="todoCtrl">
+		<ul>
+			<li ng-repeat="todo in todolist">{{todo}}</li>
+		</ul>		
+	</div>
+	
+	<script type="text/javascript">
+		angular.module("ciccio", [])
+			.service("elencoToDo", function(){
+				this.lista = [
+					"andare a fare la spesa",
+					"andare agli allenamenti"
+				];
+				
+				this.aggiungi = function(text){
+					this.lista.push(text);
+				};
+			});
+			
+		angular.module("ciccio")
+			.controller("testoCtrl", function($scope, elencoToDo){
+				$scope.aggiungiTesto = function(){
+					elencoToDo.aggiungi($scope.todo);
+					$scope.todo = "";
+				}
+			});
+			
+		angular.module("ciccio")
+			.controller("todoCtrl", function ($scope, elencoToDo){
+				$scope.todolist = elencoToDo.lista;
+			});
+			
+		 
+	</script>
+</body>
+</html>
